@@ -30,3 +30,9 @@ ruff check src tests
 
 Settings are read from environment variables with the `RETRACE_` prefix or a `.env` file
 (e.g. `RETRACE_PORT=8000`, `RETRACE_DEBUG=true`). See `src/retraceai/config.py`.
+
+MongoDB Atlas connection:
+
+```sh
+export RETRACE_MONGODB_URI="mongodb+srv://<user>:<password>@<cluster>.mongodb.net/?retryWrites=true&w=majority"
+```
