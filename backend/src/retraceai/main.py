@@ -1,8 +1,11 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 from pymongo import MongoClient
 
 from retraceai.api.health import router as health_router
+from retraceai.api.search import router as search_router
 from retraceai.config import get_settings
+from retraceai.gemini import get_generative_model
 
 settings = get_settings()
 
@@ -13,6 +16,7 @@ app = FastAPI(
 )
 
 app.include_router(health_router)
+app.include_router(search_router)
 
 db_client: MongoClient | None = None
 if settings.mongodb_uri:
@@ -22,6 +26,17 @@ else:
     print("MONGODB_URI not set; skipping database connection")
 
 
+class Prompt(BaseModel):
+    prompt: str
+
+
 @app.get("/")
 def root() -> dict[str, str]:
     return {"message": f"Welcome to {settings.app_name}"}
+
+
+@app.post("/generate")
+def generate(data: Prompt) -> dict[str, str]:
+    model = get_generative_model()
+    response = model.generate_content(data.prompt)
+    return {"response": response.text}

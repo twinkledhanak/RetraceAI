@@ -36,3 +36,22 @@ MongoDB Atlas connection:
 ```sh
 export RETRACE_MONGODB_URI="mongodb+srv://<user>:<password>@<cluster>.mongodb.net/?retryWrites=true&w=majority"
 ```
+
+## Gemini (Vertex AI)
+
+The model, GCP project, and location are configurable via `RETRACE_GEMINI_MODEL`,
+`RETRACE_GCP_PROJECT`, and `RETRACE_GCP_LOCATION` (see `src/retraceai/config.py`).
+
+Authenticate with a service account JSON or ADC:
+
+```sh
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account.json"
+# or
+gcloud auth application-default login
+```
+
+Run the live Gemini test (skipped automatically when no credentials are found):
+
+```sh
+pytest tests/test_gemini.py -s
+```

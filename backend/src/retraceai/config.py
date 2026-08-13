@@ -16,6 +16,9 @@ class Settings(BaseSettings):
         default=None,
         validation_alias=AliasChoices("RETRACE_MONGODB_URI", "MONGODB_URI"),
     )
+    gcp_project: str = "project-8a407ddf-d88d-418f-830"
+    gcp_location: str = "us-central1"
+    gemini_model: str = "gemini-2.5-pro"
 
 
 @lru_cache

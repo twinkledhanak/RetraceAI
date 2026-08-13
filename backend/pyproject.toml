@@ -8,6 +8,8 @@ dependencies = [
     "uvicorn[standard]>=0.30",
     "pydantic-settings>=2.4",
     "pymongo>=4.8",
+    "vertexai>=1.71",
+    "google-cloud-aiplatform>=1.71",
 ]
 
 [project.optional-dependencies]
