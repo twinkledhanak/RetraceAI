@@ -19,6 +19,11 @@ class Settings(BaseSettings):
     gcp_project: str = "project-8a407ddf-d88d-418f-830"
     gcp_location: str = "us-central1"
     gemini_model: str = "gemini-2.5-pro"
+    embedding_model: str = "gemini-embedding-001"
+    mongo_db: str = "Twinkle_DB"
+    mongo_collection: str = "Upgrade_Sessions"
+    vector_index_name: str = "autoembed_index"
+    vector_path: str = "attempts.errorText"
 
 
 @lru_cache

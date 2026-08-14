@@ -1,11 +1,17 @@
+import logging
+
 from fastapi import FastAPI
 from pydantic import BaseModel
-from pymongo import MongoClient
 
 from retraceai.api.health import router as health_router
 from retraceai.api.search import router as search_router
+from retraceai.api.sessions import router as sessions_router
 from retraceai.config import get_settings
+from retraceai.db import get_db_client
 from retraceai.gemini import get_generative_model
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+logger = logging.getLogger("retraceai")
 
 settings = get_settings()
 
@@ -17,13 +23,13 @@ app = FastAPI(
 
 app.include_router(health_router)
 app.include_router(search_router)
+app.include_router(sessions_router)
 
-db_client: MongoClient | None = None
-if settings.mongodb_uri:
-    db_client = MongoClient(settings.mongodb_uri.get_secret_value())
-    print("Connected to MongoDB:", db_client.server_info())
+db_client = get_db_client()
+if db_client is None:
+    logger.warning("MONGODB_URI not set; skipping database connection")
 else:
-    print("MONGODB_URI not set; skipping database connection")
+    logger.info("Connected to MongoDB: %s", db_client.server_info())
 
 
 class Prompt(BaseModel):
